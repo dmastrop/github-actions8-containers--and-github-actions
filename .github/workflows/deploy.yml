@@ -16,6 +16,10 @@ jobs:
     # create a testing enviornment on github. 
     # add secrets for the below to this github environment
     runs-on: ubuntu-latest
+    container:
+      image: node:16
+      # we just need to add this to the job to get this to run in a container
+      #these steps in test job will run in the container. The container will run on the ubuntu-latest runner
     env:
     # these are env variables available to job "test"
       MONGODB_CONNECTION_PROTOCOL: mongodb+srv
