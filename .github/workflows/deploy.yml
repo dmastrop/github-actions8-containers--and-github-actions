@@ -25,7 +25,9 @@ jobs:
       # added this to environment "testing" github secrets
       MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
       # added this to environment "testing" github secrets
-      PORT: 8080
+      PORT: 8081
+      #PORT: 8080
+      # I am using 8080 locally so use 8081
     steps:
       - name: Get Code
         uses: actions/checkout@v3
