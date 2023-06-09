@@ -6,17 +6,25 @@ on:
       - dev
       - master
 env:
+# these are environmental variables at the workflow level available to all jobs
+# in this workflow
   CACHE_KEY: node-deps
   MONGODB_DB_NAME: gha-demo
 jobs:
   test:
     environment: testing
+    # create a testing enviornment on github. 
+    # add secrets for the below to this github environment
     runs-on: ubuntu-latest
     env:
+    # these are env variables available to job "test"
       MONGODB_CONNECTION_PROTOCOL: mongodb+srv
-      MONGODB_CLUSTER_ADDRESS: cluster0.ntrwp.mongodb.net
+      MONDGODB_CLUSTER_ADDRESS: cluster0.pj1lxuo.mongodb.net
+      #MONGODB_CLUSTER_ADDRESS: cluster0.ntrwp.mongodb.net
       MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+      # added this to environment "testing" github secrets
       MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      # added this to environment "testing" github secrets
       PORT: 8080
     steps:
       - name: Get Code
