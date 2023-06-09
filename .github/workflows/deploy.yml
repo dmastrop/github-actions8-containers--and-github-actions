@@ -7,7 +7,7 @@ on:
       - master
 env:
 # these are environmental variables at the workflow level available to all jobs
-# in this workflow.
+# in this workflow...
   CACHE_KEY: node-deps
   MONGODB_DB_NAME: gha-demo
 jobs:
