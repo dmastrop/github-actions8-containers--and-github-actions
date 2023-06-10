@@ -20,7 +20,8 @@ jobs:
     # these are env variables available to job "test" and these are for the atlas cloud mongodb setup
     # not the mongodb docker container setup.  This below is setup #1
     env:
-      MONGODB_CONNECTION_PROTOCOL: mongodb+srv
+      #MONGODB_CONNECTION_PROTOCOL: mongodb+srv
+      MONGODB_CONNECTION_PROTOCOL: mongodb
       MONDGODB_CLUSTER_ADDRESS: cluster0.pj1lxuo.mongodb.net
 #      #MONGODB_CLUSTER_ADDRESS: cluster0.ntrwp.mongodb.net
       MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
