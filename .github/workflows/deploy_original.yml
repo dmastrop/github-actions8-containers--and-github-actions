@@ -22,8 +22,9 @@ jobs:
     # not the mongodb docker container setup.  This below is setup #1
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb+srv
-      MONDGODB_CLUSTER_ADDRESS: cluster0.pj1lxuo.mongodb.net
+      MONGODB_CLUSTER_ADDRESS: cluster0.pj1lxuo.mongodb.net
 #      #MONGODB_CLUSTER_ADDRESS: cluster0.ntrwp.mongodb.net
+        # misspelled the MONGODB_ part of the cluster address
       MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
        # added this to environment "testing" github secrets
       MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
