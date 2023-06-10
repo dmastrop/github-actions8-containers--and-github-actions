@@ -1,0 +1,93 @@
+name: Deployment (Container)
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - master
+env:
+# these are environmental variables at the workflow level available to all jobs
+# in this workflow...
+  CACHE_KEY: node-deps
+  MONGODB_DB_NAME: gha-demo
+jobs:
+  test:
+    environment: testing
+    # create a testing enviornment on github. 
+    # add secrets for the below to this github environment
+    runs-on: ubuntu-latest
+    #container:
+      #image: node:16
+      # we just need to add this to the job to get this to run in a container
+      #these steps in test job will run in the container. The container will run on the ubuntu-latest runner
+      # note that this is the container to run the job, it is not a service container.  Service container
+      # is below
+
+    #env:
+    # this is for the service container mongodb setup #2 running on the runner
+      #MONGODB_CONNECTION_PROTOCOL: mongodb
+
+      # if running the runner on the ubuntu-latest gitlab and not in the container things change slightly
+      # comment out the container: above
+      # now this is running on the gitlab runner
+      #MONGODB_CLUSTER_ADDRESS: 127.0.0.1:27017
+
+      # if running the runner in a container (see container: above)this will be very easy
+      # the runner container can contact the mongodb service container by just using the services: name "mongodb" (see below)
+      #MONGODB_CLUSTER_ADDRESS: mongddb
+
+      #MONGODB_USERNAME: root
+      #MONGODB_PASSWORD: example
+      #PORT: 8080
+
+    # these are env variables available to job "test" and these are for the atlas cloud mongodb setup
+    # not the mongodb docker container setup.  This below is setup #1
+    env:
+      MONGODB_CONNECTION_PROTOCOL: mongodb+srv
+      MONDGODB_CLUSTER_ADDRESS: cluster0.pj1lxuo.mongodb.net
+#      #MONGODB_CLUSTER_ADDRESS: cluster0.ntrwp.mongodb.net
+      MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+       # added this to environment "testing" github secrets
+      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+#      # added this to environment "testing" github secrets
+      PORT: 8080
+
+    #services:
+    # this is for the service container mongodb setup #2
+    #  mongodb:
+    #    image: mongo
+    #    ports:
+    #      - 27017:27017
+    #    env:
+    #      MONGO_INITDB_ROOT_USERNAME: root
+    #      MONGO_INITDB_ROOT_PASSWORD: example
+    
+    
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ env.CACHE_KEY }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Run server
+        run: npm start & npx wait-on http://127.0.0.1:$PORT # requires MongoDB Atlas to accept requests from anywhere!
+      - name: Run tests
+        run: npm test
+      - name: Output information
+        run: |
+          echo "MONGODB_USERNAME: $MONGODB_USERNAME"
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output information
+        env:
+          PORT: 3000
+        run: |        
+          echo "MONGODB_DB_NAME: $MONGODB_DB_NAME"
+          echo "MONGODB_USERNAME: $MONGODB_USERNAME"
+          echo "${{ env.PORT }}"
