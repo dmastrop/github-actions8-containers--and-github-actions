@@ -16,29 +16,6 @@ jobs:
     # create a testing enviornment on github. 
     # add secrets for the below to this github environment
     runs-on: ubuntu-latest
-    #container:
-      #image: node:16
-      # we just need to add this to the job to get this to run in a container
-      #these steps in test job will run in the container. The container will run on the ubuntu-latest runner
-      # note that this is the container to run the job, it is not a service container.  Service container
-      # is below
-
-    #env:
-    # this is for the service container mongodb setup #2 running on the runner
-      #MONGODB_CONNECTION_PROTOCOL: mongodb
-
-      # if running the runner on the ubuntu-latest gitlab and not in the container things change slightly
-      # comment out the container: above
-      # now this is running on the gitlab runner
-      #MONGODB_CLUSTER_ADDRESS: 127.0.0.1:27017
-
-      # if running the runner in a container (see container: above)this will be very easy
-      # the runner container can contact the mongodb service container by just using the services: name "mongodb" (see below)
-      #MONGODB_CLUSTER_ADDRESS: mongddb
-
-      #MONGODB_USERNAME: root
-      #MONGODB_PASSWORD: example
-      #PORT: 8080
 
     # these are env variables available to job "test" and these are for the atlas cloud mongodb setup
     # not the mongodb docker container setup.  This below is setup #1
@@ -52,17 +29,6 @@ jobs:
 #      # added this to environment "testing" github secrets
       PORT: 8080
 
-    #services:
-    # this is for the service container mongodb setup #2
-    #  mongodb:
-    #    image: mongo
-    #    ports:
-    #      - 27017:27017
-    #    env:
-    #      MONGO_INITDB_ROOT_USERNAME: root
-    #      MONGO_INITDB_ROOT_PASSWORD: example
-    
-    
     steps:
       - name: Get Code
         uses: actions/checkout@v3
