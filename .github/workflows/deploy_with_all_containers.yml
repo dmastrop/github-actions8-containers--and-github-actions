@@ -34,7 +34,7 @@ jobs:
 
       # if running the runner in a container (see container: above)this will be very easy
       # the runner container can contact the mongodb service container by just using the services: name "mongodb" (see below)
-      MONGODB_CLUSTER_ADDRESS: mongddb
+      MONGODB_CLUSTER_ADDRESS: mongodb
 
       MONGODB_USERNAME: root
       MONGODB_PASSWORD: example
